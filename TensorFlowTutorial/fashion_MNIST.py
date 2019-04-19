@@ -3,10 +3,6 @@ from __future__ import absolute_import, division, print_function
 # TensorFlow and tf.keras
 import tensorflow as tf
 from tensorflow import keras
-
-# TensorFlow and tf.keras
-import tensorflow as tf
-from tensorflow import keras
 import matplotlib.pyplot as plt
 
 fashion_mnist = keras.datasets.fashion_mnist
