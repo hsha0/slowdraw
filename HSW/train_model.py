@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import ast
 
 import tensorflow as tf
 
@@ -16,17 +17,16 @@ def get_num_classes():
   return num_classes
 
 def get_input_fn(mode, tfrecord_pattern, batch_size):
-    """
-    Creates an input_fn thats stores all the data in memory
+  """Creates an input_fn that stores all the data in memory.
 
-    Args:
-        mode: one of tf.contrib.learn.ModeKeys.{TRAIN, INFER, EVAL}
-        tfrecord_pattern: path to a TF record file created using create_dataset.py.
-        batch_size: the batch size to output.
+  Args:
+   mode: one of tf.contrib.learn.ModeKeys.{TRAIN, INFER, EVAL}
+   tfrecord_pattern: path to a TF record file created using create_dataset.py.
+   batch_size: the batch size to output.
 
-    Returns:
-        A valid input_fn for the model estimator.
-    """
+  Returns:
+    A valid input_fn for the model estimator.
+  """
 
     def _parse_tfexample_fn(example_proto, mode):
         feature_to_type = {
