@@ -5,6 +5,7 @@ from __future__ import print_function
 import argparse
 import sys
 import ast
+import functools
 
 import tensorflow as tf
 
@@ -12,7 +13,7 @@ import tensorflow as tf
 def get_num_classes():
     classes = []
     with tf.gfile.GFile(FLAGS.classes_file, "r") as f:
-    classes = [x for x in f]
+        classes = [x for x in f]
     num_classes = len(classes)
     return num_classes
 
@@ -117,8 +118,8 @@ def model_fn(features, labels, mode, params):
     # Build the model.
     inks, lengths, labels = _get_input_tensors(features, labels)
 
-    convoluted = inks
-    convoluted_input = convoluted
+    convolved = inks
+    convolved_input = convolved
 
     #Normalize the batch
     convoluted_input = tf.layers.batch_normalization(
@@ -153,7 +154,7 @@ def model_fn(features, labels, mode, params):
     outputs = tf.reduce_sum(zero_outside, axis=1)
 
     #Adds a fully connected layer.
-    tf.layers.dense(outputs, params.num_classes)
+    logits = tf.layers.dense(outputs, params.num_classes)
 
     # Add the loss.
     cross_entropy = tf.reduce_mean(
