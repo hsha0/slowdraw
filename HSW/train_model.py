@@ -15,8 +15,8 @@ def get_num_classes():
   num_classes = len(classes)
   return num_classes
 
-
-def get_input_fn(mode, tfrecord_pattern, batch_size):
+def model_fn(features, labels, mode, params):
+  def get_input_fn(mode, tfrecord_pattern, batch_size):
   """Creates an input_fn that stores all the data in memory.
 
   Args:
