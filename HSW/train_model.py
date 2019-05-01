@@ -17,6 +17,7 @@ def get_num_classes():
     num_classes = len(classes)
     return num_classes
 
+
 def get_input_fn(mode, tfrecord_pattern, batch_size):
     """Creates an input_fn that stores all the data in memory.
 
@@ -139,7 +140,7 @@ def model_fn(features, labels, mode, params):
     lstm = tf.contrib.cudnn_rnn.CudnnLSTM(
       num_layers=params.num_layers,
       num_units=params.num_nodes,
-      dropout=params.dropout if mode == tf.estimator.ModeKeys.TRAIN else 0.0,
+      #dropout=params.dropout if mode == tf.estimator.ModeKeys.TRAIN else 0.0,
       direction="bidirectional")
     outputs, _ = lstm(convolved)
     # Convert back from time-major outputs to batch-major outputs.
