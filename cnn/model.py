@@ -45,7 +45,6 @@ def main():
 
     #shuffle
 
-
     def cnn_model_fn(features, labels, mode):
         """Model function for CNN."""
         # Input Layer
@@ -71,9 +70,18 @@ def main():
             activation=tf.nn.relu)
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
 
+        # Convolutional Layer #3 and Pooling Layer #3
+        conv3 = tf.layers.conv2d(
+            inputs=pool2,
+            filters=128,
+            kernel_size=[3, 3],
+            padding="same",
+            activation=tf.nn.relu)
+        pool3 = tf.layers.max_pooling2d(inputs=conv3, pool_size=[2, 2], strides=2)
+
         # Dense Layer
-        pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
-        dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
+        pool3_flat = tf.reshape(pool3, [-1, 3 * 3 * 128])
+        dense = tf.layers.dense(inputs=pool3_flat, units=1024, activation=tf.nn.relu)
         dropout = tf.layers.dropout(
             inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
