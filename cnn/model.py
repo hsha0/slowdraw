@@ -7,7 +7,7 @@ from tensorflow import keras
 import numpy as np
 from os import listdir
 
-tf.logging.set_verbosity(tf.logging.INFO)
+#tf.logging.set_verbosity(tf.logging.INFO)
 
 def main():
     train_images = None
@@ -143,7 +143,7 @@ def main():
 
     drawing_classifier.train(
         input_fn=train_input_fn,
-        steps=1,
+        steps=1000,
         hooks=[logging_hook])
 
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
