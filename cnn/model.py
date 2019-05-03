@@ -124,5 +124,5 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
 
 drawing_classifier.train(
     input_fn=train_input_fn,
-    steps=1000,
+    steps=1,
     hooks=[logging_hook])
