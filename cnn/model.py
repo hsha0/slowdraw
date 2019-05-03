@@ -7,7 +7,7 @@ from tensorflow import keras
 import numpy as np
 from os import listdir
 
-tf.logging.set_verbosity(tf.logging.INFO)
+#tf.logging.set_verbosity(tf.logging.INFO)
 
 def main():
     train_images = None
