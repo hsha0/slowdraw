@@ -1,6 +1,50 @@
 import tensorflow as tf
 
-BATCH_SIZE=10;
+def get_single_record(example_proto, mode):
+    feature_to_type = {
+        "ink": tf.VarLenFeature(dtype=tf.float32),
+        "shape": tf.FixedLenFeature([2], dtype=tf.int64)
+    }
+    if mode != tf.estimator.ModeKeys.PREDICT:
+      # The labels won't be available at inference time, so don't add them
+      # to the list of feature_columns to be read.
+      feature_to_type["class_index"] = tf.FixedLenFeature([1], dtype=tf.int64)
+
+    parsed_features = tf.parse_single_example(example_proto, feature_to_type)
+    labels = None
+    if mode != tf.estimator.ModeKeys.PREDICT:
+      labels = parsed_features["class_index"]
+    parsed_features["ink"] = tf.sparse_tensor_to_dense(parsed_features["ink"])
+    return parsed_features, labels
+
+def get_input_fn(mode, tfrecord_pattern, batch_size):
+    
+  def _get_input():
+    dataset = tf.data.TFRecordDataset.list_files(tfrecord_pattern)
+    # if mode == tf.estimator.ModeKeys.TRAIN:
+    #   dataset = dataset.shuffle(buffer_size=10)
+    # dataset = dataset.repeat()
+    # Preprocesses 10 files concurrently and interleaves records from each file.
+    dataset = dataset.interleave(
+        tf.data.TFRecordDataset,
+        cycle_length=10,
+        block_length=1)
+    dataset = dataset.map(
+        functools.partial(get_single_record, mode=mode),
+        num_parallel_calls=10)
+    dataset = dataset.prefetch(10000)
+    if mode == tf.estimator.ModeKeys.TRAIN:
+      dataset = dataset.shuffle(buffer_size=1000000)
+    # Our inputs are variable length, so pad them.
+    dataset = dataset.padded_batch(batch_size, padded_shapes=dataset.output_shapes)
+    features, labels = dataset.make_one_shot_iterator().get_next()
+    return features, labels
+
+  return _get_input
+        
+
+def main(unused_args):
+    pass
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
@@ -8,17 +52,17 @@ if __name__ == "__main__":
   parser.add_argument(
       "--TFRecord",
       type=str,
-      default="../dataset/",
+      default="../dataset/training.tfrecord-00000-of-00010",
       help="Path to training data (tf.Example in TFRecord format)")
   parser.add_argument(
       "--eval_data",
       type=str,
-      default="",
+      default="../dataset/eval.tfrecord-00000-of-00010",
       help="Path to evaluation data (tf.Example in TFRecord format)")
   parser.add_argument(
       "--classes_file",
       type=str,
-      default="",
+      default="../dataset/training.tfrecord.classes",
       help="Path to a file with the classes - one class per line")
   parser.add_argument(
       "--num_layers",
