@@ -15,7 +15,9 @@ def get_num_classes():
   return num_classes
 
 def get_input_fn(mode, tfrecord_pattern, batch_size):
-    print()
+    np=numpy.load(tfrecord_pattern)
+    data=tf.convert_to_tensor(np)
+    
 
 def create_estimator_and_specs(run_config):
     model_params = tf.contrib.training.HParams(
