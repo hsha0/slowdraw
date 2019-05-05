@@ -143,7 +143,7 @@ def main(unused_args):
     logging_hook = tf.train.LoggingTensorHook(
         tensors=tensors_to_log, every_n_iter=50)
 
-    for i in range(0, FLAGS.steps//100):
+    for i in range(0, FLAGS.steps//1000):
         train_input_fn = tf.estimator.inputs.numpy_input_fn(
             x={"x": train_data},
             y=train_labels,
@@ -153,7 +153,7 @@ def main(unused_args):
 
         drawing_classifier.train(
             input_fn=train_input_fn,
-            steps=100,
+            steps=1000,
             hooks=[logging_hook])
 
         eval_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -172,7 +172,7 @@ if __name__ == "__main__":
   parser.add_argument(
       "--learning_rate",
       type=float,
-      default=0.0001,
+      default=0.001,
       help="Learning rate used for training.")
   parser.add_argument(
       "--steps",
