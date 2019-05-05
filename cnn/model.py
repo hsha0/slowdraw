@@ -143,26 +143,28 @@ def main(unused_args):
     logging_hook = tf.train.LoggingTensorHook(
         tensors=tensors_to_log, every_n_iter=50)
 
-    train_input_fn = tf.estimator.inputs.numpy_input_fn(
-        x={"x": train_data},
-        y=train_labels,
-        batch_size=100,
-        num_epochs=None,
-        shuffle=True)
+    for i in range(0, FLAGS.steps//100):
+        train_input_fn = tf.estimator.inputs.numpy_input_fn(
+            x={"x": train_data},
+            y=train_labels,
+            batch_size=100,
+            num_epochs=None,
+            shuffle=True)
 
-    drawing_classifier.train(
-        input_fn=train_input_fn,
-        steps=FLAGS.steps,
-        hooks=[logging_hook])
+        drawing_classifier.train(
+            input_fn=train_input_fn,
+            steps=100,
+            hooks=[logging_hook])
 
-    eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-        x={"x": eval_data},
-        y=eval_labels,
-        num_epochs=1,
-        shuffle=False)
+        eval_input_fn = tf.estimator.inputs.numpy_input_fn(
+            x={"x": eval_data},
+            y=eval_labels,
+            num_epochs=1,
+            shuffle=False)
 
-    eval_results = drawing_classifier.evaluate(input_fn=eval_input_fn)
-    print(eval_results)
+        eval_results = drawing_classifier.evaluate(input_fn=eval_input_fn)
+        print(eval_results)
+
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
