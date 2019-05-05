@@ -40,10 +40,15 @@ def main():
         else:
             train_labels = np.concatenate((train_labels, label_one_class[:10000]))
             eval_labels = np.concatenate((eval_labels, label_one_class[10000:]))
-
-
-
-    #shuffle
+    assert len(train_images) == len(train_labels)
+    random_pmt = numpy.random.permutation(len(train_images))
+    train_images=train_images[random_pmt]
+    train_labels=train_labels[random_pmt]
+    # indeces = np.random.choice(len(train_images), size=len(train_images), replace=False)
+    # train_images=train_images[indeces]
+    # train_labels=train_labels[indeces]
+    
+    
 
     def cnn_model_fn(features, labels, mode):
         """Model function for CNN."""
