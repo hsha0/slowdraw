@@ -47,7 +47,7 @@ def main(unused_args):
     random_pmt = np.random.permutation(len(train_images))
     train_images=train_images[random_pmt]
     train_labels=train_labels[random_pmt]
-    
+
     # indeces = np.random.choice(len(train_images), size=len(train_images), replace=False)
     # train_images=train_images[indeces]
     # train_labels=train_labels[indeces]
