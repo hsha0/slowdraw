@@ -7,12 +7,11 @@ from tensorflow import keras
 import numpy as np
 from os import listdir
 import argparse
-
+import sys
 
 #tf.logging.set_verbosity(tf.logging.INFO)
-STEPS = 1
 
-def main():
+def main(unused_args):
     train_images = None
     eval_images = None
     first = True
@@ -164,8 +163,6 @@ def main():
 
     eval_results = drawing_classifier.evaluate(input_fn=eval_input_fn)
     print(eval_results)
-
-main()
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
