@@ -8,6 +8,7 @@ import numpy as np
 from os import listdir
 
 #tf.logging.set_verbosity(tf.logging.INFO)
+STEPS = 1
 
 def main():
     train_images = None
@@ -28,7 +29,7 @@ def main():
             train_images = np.concatenate((train_images, data_one_class[:10000]))
             eval_images = np.concatenate((eval_images, data_one_class[10000:]))
 
-        label = file_name.split("_")[3][:-4]
+        label = file_name[:-4]
         int2labels.append(label)
         labels2int[label] = len(int2labels)-1
 
@@ -40,10 +41,12 @@ def main():
         else:
             train_labels = np.concatenate((train_labels, label_one_class[:10000]))
             eval_labels = np.concatenate((eval_labels, label_one_class[10000:]))
+    
     assert len(train_images) == len(train_labels)
-    random_pmt = numpy.random.permutation(len(train_images))
+    random_pmt = np.random.permutation(len(train_images))
     train_images=train_images[random_pmt]
     train_labels=train_labels[random_pmt]
+    
     # indeces = np.random.choice(len(train_images), size=len(train_images), replace=False)
     # train_images=train_images[indeces]
     # train_labels=train_labels[indeces]
@@ -148,7 +151,7 @@ def main():
 
     drawing_classifier.train(
         input_fn=train_input_fn,
-        steps=1,
+        steps=STEPS,
         hooks=[logging_hook])
 
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
