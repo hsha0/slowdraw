@@ -6,6 +6,8 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 from os import listdir
+import argparse
+
 
 #tf.logging.set_verbosity(tf.logging.INFO)
 STEPS = 1
@@ -112,7 +114,7 @@ def main():
 
         # Configure the Training Op (for TRAIN mode)
         if mode == tf.estimator.ModeKeys.TRAIN:
-            optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+            optimizer = tf.train.GradientDescentOptimizer(learning_rate=FLAGS.learning_rate)
             train_op = optimizer.minimize(
                 loss=loss,
                 global_step=tf.train.get_global_step())
@@ -134,7 +136,7 @@ def main():
     eval_data = eval_images/np.float32(255)
 
     drawing_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="model_test")
+        model_fn=cnn_model_fn, model_dir=FLAGS.model_dir)
 
     # Set up logging for predictions
     tensors_to_log = {"probabilities": "softmax_tensor"}
@@ -151,7 +153,7 @@ def main():
 
     drawing_classifier.train(
         input_fn=train_input_fn,
-        steps=STEPS,
+        steps=FLAGS.steps,
         hooks=[logging_hook])
 
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -164,3 +166,25 @@ def main():
     print(eval_results)
 
 main()
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser()
+  parser.register("type", "bool", lambda v: v.lower() == "true")
+  parser.add_argument(
+      "--learning_rate",
+      type=float,
+      default=0.0001,
+      help="Learning rate used for training.")
+  parser.add_argument(
+      "--steps",
+      type=int,
+      default=100000,
+      help="Number of training steps.")
+  parser.add_argument(
+      "--model_dir",
+      type=str,
+      default="",
+      help="Path for storing the model checkpoints.")
+  FLAGS, unparsed = parser.parse_known_args()
+  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+
