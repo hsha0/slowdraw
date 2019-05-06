@@ -96,11 +96,11 @@ def main(unused_args):
 
         # Dense Layer
         pool2_flat = tf.reshape(pool2, [-1, 2 * 2 * 256])
-        dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
+        dense = tf.layers.dense(inputs=pool2_flat, units=4096, activation=tf.nn.relu)
         dropout = tf.layers.dropout(
             inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
-        dense2 = tf.layers.dense(inputs=dropout, units=1024, activation=tf.nn.relu)
+        dense2 = tf.layers.dense(inputs=dropout, units=4096, activation=tf.nn.relu)
         dropout2 = tf.layers.dropout(
             inputs=dense2, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
