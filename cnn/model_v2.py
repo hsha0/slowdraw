@@ -62,8 +62,8 @@ def main(unused_args):
         # Convolutional Layer #1
         conv1 = tf.layers.conv2d(
             inputs=input_layer,
-            filters=96,
-            kernel_size=[5, 5],
+            filters=256,
+            kernel_size=[3, 3],
             padding="valid",
             activation=tf.nn.relu)
 
@@ -73,13 +73,11 @@ def main(unused_args):
         # Convolutional Layer #2 and Pooling Layer #2
         conv2 = tf.layers.conv2d(
             inputs=pool1,
-            filters=256,
+            filters=384,
             kernel_size=[3, 3],
             padding="valid",
             activation=tf.nn.relu)
-        pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[3, 3], strides=2, padding='valid')
 
-        # Convolutional Layer #3 and Pooling Layer #3
         conv3 = tf.layers.conv2d(
             inputs=pool2,
             filters=384,
@@ -94,18 +92,11 @@ def main(unused_args):
             padding="valid",
             activation=tf.nn.relu)
 
-        conv5 = tf.layers.conv2d(
-            inputs=conv4,
-            filters=256,
-            kernel_size=[3, 3],
-            padding="valid",
-            activation=tf.nn.relu)
-
-        pool3 = tf.layers.max_pooling2d(inputs=conv5, pool_size=[3, 3], strides=2, padding='valid')
+        pool2 = tf.layers.max_pooling2d(inputs=conv4, pool_size=[3, 3], strides=2, padding='valid')
 
         # Dense Layer
-        pool3_flat = tf.reshape(pool3, [-1, 3 * 3 * 128])
-        dense = tf.layers.dense(inputs=pool3_flat, units=1024, activation=tf.nn.relu)
+        pool2_flat = tf.reshape(pool2, [-1, 3 * 3 * 128])
+        dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
         dropout = tf.layers.dropout(
             inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
