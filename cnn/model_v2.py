@@ -87,7 +87,7 @@ def main(unused_args):
 
         conv4 = tf.layers.conv2d(
             inputs=conv3,
-            filters=384,
+            filters=256,
             kernel_size=[3, 3],
             padding="valid",
             activation=tf.nn.relu)
