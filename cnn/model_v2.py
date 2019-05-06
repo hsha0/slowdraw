@@ -20,7 +20,7 @@ def main(unused_args):
 
     int2labels = []
     labels2int = {}
-    for file_name in listdir("npy11000"):
+    for file_name in listdir("npy11000")[:3]:
         data_one_class = np.load("npy11000/"+file_name)[:11000]
         if first:
             train_images = data_one_class[:10000]
