@@ -287,7 +287,7 @@ def main(unused_args):
           model_dir=FLAGS.model_dir,
           save_checkpoints_secs=300,
           save_summary_steps=100))
-  tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)
+  tf.estimator.train_and_evaluatee(estimator, train_spec, eval_spec)
 
 
 if __name__ == "__main__":
