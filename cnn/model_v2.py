@@ -68,7 +68,7 @@ def main(unused_args):
             activation=tf.nn.relu)
 
         # Pooling Layer #1
-        pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[3, 3], strides=2)
+        pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[3, 3], strides=2, padding='valid')
 
         # Convolutional Layer #2 and Pooling Layer #2
         conv2 = tf.layers.conv2d(
@@ -77,7 +77,7 @@ def main(unused_args):
             kernel_size=[3, 3],
             padding="valid",
             activation=tf.nn.relu)
-        pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[3, 3], strides=2)
+        pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[3, 3], strides=2, padding='valid')
 
         # Convolutional Layer #3 and Pooling Layer #3
         conv3 = tf.layers.conv2d(
@@ -101,7 +101,7 @@ def main(unused_args):
             padding="valid",
             activation=tf.nn.relu)
 
-        pool3 = tf.layers.max_pooling2d(inputs=conv5, pool_size=[2, 2], strides=2)
+        pool3 = tf.layers.max_pooling2d(inputs=conv5, pool_size=[3, 3], strides=2, padding='valid')
 
         # Dense Layer
         pool3_flat = tf.reshape(pool3, [-1, 3 * 3 * 128])
