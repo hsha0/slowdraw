@@ -62,7 +62,7 @@ def main(unused_args):
         # Convolutional Layer #1
         conv1 = tf.layers.conv2d(
             inputs=input_layer,
-            filters=64,
+            filters=96,
             kernel_size=[5, 5],
             padding="valid",
             activation=tf.nn.relu)
@@ -73,7 +73,7 @@ def main(unused_args):
         # Convolutional Layer #2 and Pooling Layer #2
         conv2 = tf.layers.conv2d(
             inputs=pool1,
-            filters=128,
+            filters=256,
             kernel_size=[3, 3],
             padding="valid",
             activation=tf.nn.relu)
