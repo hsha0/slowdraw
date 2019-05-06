@@ -100,8 +100,12 @@ def main(unused_args):
         dropout = tf.layers.dropout(
             inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
+        dense2 = tf.layers.dense(inputs=dropout, units=1024, activation=tf.nn.relu)
+        dropout2 = tf.layers.dropout(
+            inputs=dense2, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
+        
         # Logits Layer
-        logits = tf.layers.dense(inputs=dropout, units=len(int2labels))
+        logits = tf.layers.dense(inputs=dropout2, units=len(int2labels))
 
         predictions = {
             # Generate predictions (for PREDICT and EVAL mode)
