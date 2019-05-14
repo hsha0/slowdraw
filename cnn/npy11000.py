@@ -1,3 +1,11 @@
+'''
+npy11000.py extracts 11000 drawing from each npy file.
+
+Author: Han Shao, Synthia Wang, Zoe Huang
+
+Date: 05/14/2019
+'''
+
 from os import listdir
 import numpy as np
 
