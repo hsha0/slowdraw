@@ -1,5 +1,9 @@
 # Slow, draw!
+A group project of CSCI 364 Artificial Intelligence.
+
 Han Shao, Synthia Wang, Zeo Huang
+
+
 
 ## Strokes Dataset in TFRecord Format
 Download the data in `TFRecord` from
@@ -32,12 +36,14 @@ To run train_model.py, please use the command
 
 ## 3-layer Convolutional Neural Network
 To run model.py, please use the command
+
 `python3 model.py --learning_rate=LEARNING_RATE --model_dir=
 PATH_TO_MODEL_DIRECTORY --steps=STEPS`
 
 The npy files should be put in the directory named npy11000.
 ## Custom AlexNet
 To run model_v2.py, please use the command
+
 `python3 model_v2.py --learning_rate=LEARNING_RATE 
 --model_dir=PATH_TO_MODEL_DIRECTORY --steps=STEPS`
 
